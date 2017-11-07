@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D83E3F31FAF9CAF0002BDC5 /* AlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D83E3F21FAF9CAF0002BDC5 /* AlbumTableViewCell.swift */; };
 		3D85E9EE1FADF8F900D43E65 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D85E9ED1FADF8F900D43E65 /* AppDelegate.swift */; };
 		3D85E9F01FADF8F900D43E65 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D85E9EF1FADF8F900D43E65 /* MasterViewController.swift */; };
 		3D85E9F21FADF8F900D43E65 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D85E9F11FADF8F900D43E65 /* DetailViewController.swift */; };
 		3D85E9F51FADF8F900D43E65 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D85E9F31FADF8F900D43E65 /* Main.storyboard */; };
 		3D85E9F71FADF8F900D43E65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D85E9F61FADF8F900D43E65 /* Assets.xcassets */; };
 		3D85E9FA1FADF8F900D43E65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D85E9F81FADF8F900D43E65 /* LaunchScreen.storyboard */; };
+		3D85EA021FAF974400D43E65 /* MusicRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D85EA011FAF974400D43E65 /* MusicRecord.swift */; };
+		3DA4AB811FB1B58400294270 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA4AB801FB1B58400294270 /* TableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D83E3F21FAF9CAF0002BDC5 /* AlbumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumTableViewCell.swift; sourceTree = "<group>"; };
 		3D85E9EA1FADF8F900D43E65 /* lab_splitview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lab_splitview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D85E9ED1FADF8F900D43E65 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3D85E9EF1FADF8F900D43E65 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +28,8 @@
 		3D85E9F61FADF8F900D43E65 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3D85E9F91FADF8F900D43E65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3D85E9FB1FADF8F900D43E65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3D85EA011FAF974400D43E65 /* MusicRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecord.swift; sourceTree = "<group>"; };
+		3DA4AB801FB1B58400294270 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,9 @@
 				3D85E9F61FADF8F900D43E65 /* Assets.xcassets */,
 				3D85E9F81FADF8F900D43E65 /* LaunchScreen.storyboard */,
 				3D85E9FB1FADF8F900D43E65 /* Info.plist */,
+				3D85EA011FAF974400D43E65 /* MusicRecord.swift */,
+				3D83E3F21FAF9CAF0002BDC5 /* AlbumTableViewCell.swift */,
+				3DA4AB801FB1B58400294270 /* TableViewController.swift */,
 			);
 			path = lab_splitview;
 			sourceTree = "<group>";
@@ -139,9 +148,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D85EA021FAF974400D43E65 /* MusicRecord.swift in Sources */,
+				3DA4AB811FB1B58400294270 /* TableViewController.swift in Sources */,
 				3D85E9F21FADF8F900D43E65 /* DetailViewController.swift in Sources */,
 				3D85E9F01FADF8F900D43E65 /* MasterViewController.swift in Sources */,
 				3D85E9EE1FADF8F900D43E65 /* AppDelegate.swift in Sources */,
+				3D83E3F31FAF9CAF0002BDC5 /* AlbumTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

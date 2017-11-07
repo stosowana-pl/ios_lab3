@@ -12,12 +12,13 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var objects = [Any]()
-
+    
+    var musicRecords = [MusicRecord]()
+    var currentRecord: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = editButtonItem
 
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         navigationItem.rightBarButtonItem = addButton
@@ -25,7 +26,45 @@ class MasterViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        self.requestData()
     }
+    
+    func parseJson(_ json: [String: Any]) -> MusicRecord? {
+        guard let artist = json["artist"] as? String,
+            let album = json["album"] as? String,
+            let genre = json["genre"] as? String,
+            let year = json["year"] as? Int,
+            let tracks = json["tracks"] as? Int
+            else {
+                return nil
+        }
+        return MusicRecord(artist, album, genre, year, tracks)
+    }
+    
+    func requestData() {
+        let session = URLSession.shared
+        let url = URL.init(string: "https://isebi.net/albums.php")
+        
+        session.dataTask(with: url!, completionHandler: { (maybeData: Data?, _, _) in
+            if let data = maybeData,
+                let maybeJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]],
+                let json = maybeJson {
+                for singleRecord in json {
+                    if let newRecord = self.parseJson(singleRecord){
+                        self.musicRecords.append(newRecord)
+                    }
+                }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }).resume()
+    }
+    
+    func updateView(){
+//        self.existingRecordView()
+    }
+    
 
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
@@ -65,14 +104,17 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objects.count
+        return musicRecords.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-
-        let object = objects[indexPath.row] as! NSDate
-        cell.textLabel!.text = object.description
+        let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as! AlbumTableViewCell
+        
+        let album = musicRecords[indexPath.row]
+        cell.AlbumField.text = album.album
+        cell.ArtistField.text = album.artist
+        cell.YearField.text = String(album.year)
+        
         return cell
     }
 
