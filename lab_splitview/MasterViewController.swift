@@ -1,31 +1,11 @@
-//
-//  MasterViewController.swift
-//  lab_splitview
-//
-//  Created by Avasil on 04/11/2017.
-//  Copyright © 2017 Avasil. All rights reserved.
-//
-
 import UIKit
 
 class MasterViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
-    var objects = [Any]()
-    
     var musicRecords = [MusicRecord]()
-    var currentRecord: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
-        if let split = splitViewController {
-            let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-        }
         self.requestData()
     }
     
@@ -61,11 +41,11 @@ class MasterViewController: UITableViewController {
         }).resume()
     }
     
-    func updateView(){
-//        self.existingRecordView()
+    func updateRecords(_ records: [MusicRecord]){
+        self.musicRecords = records
+        DispatchQueue.main.async { self.tableView.reloadData()  }
     }
     
-
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
@@ -73,32 +53,51 @@ class MasterViewController: UITableViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-    @objc
-    func insertNewObject(_ sender: Any) {
-        objects.insert(NSDate(), at: 0)
-        let indexPath = IndexPath(row: 0, section: 0)
-        tableView.insertRows(at: [indexPath], with: .automatic)
-    }
-
-    // MARK: - Segues
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
-                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
+                let controller = (segue.destination as! UINavigationController).topViewController as! TableViewController
+                controller.musicRecords = musicRecords
+                controller.index = indexPath.row
+                controller.masterViewController = self
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
+        } else if segue.identifier == "add" {
+            let controller = (segue.destination as! UINavigationController).topViewController as! TableViewController
+            controller.musicRecords = musicRecords
+            controller.index = musicRecords.count - 1
+            controller.masterViewController = self
+            controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+            controller.navigationItem.leftItemsSupplementBackButton = true
         }
     }
+    
+    @IBAction func addNewRecord(_ sender: Any) {
+        musicRecords.append(MusicRecord("", "", "", 0, 0))
+        performSegue(withIdentifier: "add", sender: sender)
+    }
+    
+    @IBAction
+    func delete(for segue: UIStoryboardSegue) {
+        let detailView = segue.source as! TableViewController
+        if (detailView.index >= 0) {
+            detailView.artistField.text = ""
+            detailView.titleField.text = ""
+            detailView.genreField.text = ""
+            detailView.yearField.text = ""
+            detailView.tracksField.text = ""
+            detailView.navLabel.title = ""
 
-    // MARK: - Table View
+            self.musicRecords.remove(at: detailView.index)
+            self.tableView.reloadData()
 
+            detailView.index = -1;
+        }
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -119,19 +118,6 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            objects.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
-    }
-
-
 }
-

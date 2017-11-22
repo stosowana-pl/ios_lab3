@@ -1,95 +1,59 @@
-//
-//  TableViewController.swift
-//  lab_splitview
-//
-//  Created by Avasil on 07/11/2017.
-//  Copyright © 2017 Avasil. All rights reserved.
-//
-
 import UIKit
 
 class TableViewController: UITableViewController {
-
+    @IBOutlet weak var yearField: UITextField!
+    
+    @IBOutlet weak var titleField: UITextField!
+    
+    @IBOutlet weak var genreField: UITextField!
+    
+    @IBOutlet weak var artistField: UITextField!
+    
+    @IBOutlet weak var tracksField: UITextField!
+    
+    @IBOutlet weak var navLabel: UINavigationItem!
+    
+    var musicRecords: [MusicRecord] = []
+    var index: Int = -1
+    var masterViewController:
+        MasterViewController? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        if (index >= 0) {
+            showCurrentRecord()
+            navLabel.title = "Edycja rekordu \(index + 1) z \(musicRecords.count)"
+        } else {
+            navLabel.title = ""
+        }
+    }
+    
+    func showCurrentRecord() {
+        let record = musicRecords[index]
+        yearField.text = "\(record.year)"
+        titleField.text = record.album
+        genreField.text = record.genre
+        artistField.text = record.artist
+        tracksField.text = "\(record.tracks)"
     }
 
+    @IBAction func editingMode(_ sender: Any) {
+        if (index >= 0) {
+            let artist = artistField.text ?? ""
+            let album = titleField.text ?? ""
+            let genre = genreField.text ?? ""
+            let year = Int(yearField.text ?? "0") ?? 0
+            let tracks = Int(tracksField.text ?? "0") ?? 0
+            
+            let record = MusicRecord(artist, album, genre, year, tracks)
+            
+            musicRecords[index] = record
+        }
+        
+        self.masterViewController?.updateRecords(musicRecords)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 0
-//    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
